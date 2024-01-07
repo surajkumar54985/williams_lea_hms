@@ -1,22 +1,20 @@
-<!DOCTYPE html>
+<?php
+	include '../header.php';
+	include '../connection.php';
+?>
 <html>
 <body>
-	<?php
-		include '../header.php';
-		include '../connection.php';
-	?>
 	<div class="container-fluid">
 		<div class="col-md-12">
 			<div class="row">
 				<div class="col-md-2" style="margin-left:-20px;">
 					<?php
-						include 'sidenav.php';
-					?>
+					include 'sidenav.php';?>
 				</div>
 				<div class="col-md-10">
-					<div class="text-center"><h3>Total Patients</h3></div>
+					<div class="text-center"><h3>Total Reports</h3></div>
 					<?php
-						$query="SELECT * FROM patients";
+						$query="SELECT * FROM report";
 						$res=mysqli_query($connect,$query);
 						$output ="";
 
@@ -24,18 +22,16 @@
 						<table class='table table-bordered'>
 						<tr>
 						<th>ID</th>
-						<th>Firstname</th> 
+						<th>Subject</th> 
+						<th>Issue</th>
 						<th>Username</th>
-						<th>Email</th>
-						<th>Date Registered</th>
-						<th>Action</th>
-
+						<th>Date Send</th>
 						</tr>";
 						if (mysqli_num_rows($res)<1) 
 						{
 							$output.="
 							<tr>
-							<td colspan='8'>No Patient</td>
+							<td colspan='8'>No Reports</td>
 							</tr>
 							";
 						}
@@ -44,11 +40,11 @@
 							$output.="
 							<tr>
 							<td>".$row['id']."</td>
-							<td>".$row['firstname']."</td>
+							<td>".$row['subject']."</td>
+							<td>".$row['Issue']."</td>
 							<td>".$row['username']."</td>
-							<td>".$row['email']."</td>
-							<td>".$row['date_reg']."</td>
-							<td><a href='view.php?id=".$row['id']."'><button class='btn btn-info'>View</button></td>";
+							<td>".$row['date_send']."</td>
+							";
 						}
 						$output.="
 						</tr>

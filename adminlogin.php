@@ -1,53 +1,48 @@
 
 
-
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Patient Login Page</title>
+    <title>Admin Login Page</title>
 </head>
 
-<body style="background-image: url(img/pp.jpg); background-size: cover; background-repeat: no-repeat;">
-
+<body style="background-image: url(img/host.jpg); background-size: cover; background-repeat: no-repeat;">
     <?php include 'header.php'; ?>
 	<?php
 		include 'connection.php';
-		if (isset($_POST['login'])) {
-			$uname=$_POST['uname'];
+		if(isset($_POST['login']))
+		{
+			$username=$_POST['uname'];
 			$password=$_POST['pass'];
-			$errror=array();
-			$q="SELECT * FROM patients WHERE username='$uname' AND password='$password'";
-			$k=mysqli_query($connect,$q);
-			$rows=mysqli_fetch_array($k);
-
-			if (empty($uname)) {
-				$errror['login']="Enter Username";
+			$error=array();
+			if (empty($username)) 
+			{
+				$error['admin']="Enter Username";
 			}
-			elseif(empty($password)){
-				$errror['login']="Enter Password";
+			else if (empty($password)) 
+			{
+				$error['admin']="Enter Password";
 			}
-			if (count($errror)==0) {
-				$query="SELECT * FROM patients WHERE username='$uname' AND password='$password'";
-				$res=mysqli_query($connect,$query);
-				if (mysqli_num_rows($res)) {
-					echo "<script>alert('done')</script>";
-					$_SESSION['patient']=$uname;
-					header("Location:patient/index.php");
+			if (count($error)==0) 
+			{
+				$query="SELECT * FROM admin WHERE username='$username' AND password='$password'";
+				$result=mysqli_query($connect,$query);
+				if(mysqli_num_rows($result)==1) 
+				{	
+					echo "<script>alert('you are logged in🤷‍♂️')</script>";	
+					$_SESSION['admin']=$username;	
+					header("Location:admin/index.php");
+					exit();
 				}
-				else{
-					echo "<script>alert('Inavlid account')</script>";
+				else
+				{
+					echo "<script>alert('Invalid Username or Password')</script>";	
 				}
 			}
 		}
-		if(isset($errror['login'])){
-			$l=$errror['login'];
-			$show="<h5 class='text-center alert alert-danger'>$l</h5>";
-		}else{
-			$show="";
-		} 
 	?>
     <div class="container-fluid">
         <div class="col-md-12">
@@ -56,8 +51,21 @@
                 <div class="col-md-6 my-5">
                     <div class="card shadow">
                         <div class="card-body">
-                            <h5 class="text-center mb-4">Patients Login👨‍⚕️!!!</h5>
-                            <div><?php echo $show; ?></div>
+                            <h5 class="text-center mb-4">Admin Login👨‍⚕️!!!</h5>
+                            <div class="alert alert-danger">
+								<?php
+									if (isset($error['admin'])) 
+									{
+										$sh=$error['admin'];
+										$show="<h5 >$sh</h5>";
+									}
+									else
+									{
+										$show="";
+									}
+									echo $show;
+								?>
+							</div>
                             <form method="post">
                                 <div class="row my-2">
                                     <div class="form-group col-md-12">
@@ -72,8 +80,7 @@
                                     </div>
                                 </div>
                                 <div class="text-center my-3">
-                                    <input type="submit" name="login" value="Login" class="btn btn-danger">
-                                    <p class="mt-3 my-3">Dont have an account🤷‍♂️<a href="account.php">!!Apply Now!!</a></p>
+                                    <input type="submit" name="login" value="Login👈" class="btn btn-danger">
                                 </div>
                             </form>
                         </div>

@@ -1,4 +1,8 @@
 <!DOCTYPE html>
+<?php
+    session_start();
+?>
+
 <html lang="en">
 <head>
     <title>Hospital Management System</title>
@@ -35,9 +39,12 @@
             <ul class=" navbar-nav ms-auto">
                 <?php
                 if (isset($_SESSION['admin'])) {
-                    $user = isset($_SESSION['admin']) ? $_SESSION['admin'] : (isset($_SESSION['doc']) ? $_SESSION['doc'] : $_SESSION['patient']);
-                    echo '<li class="nav-item"><a href="#" class="nav-link text-white">@' . $user . '</a></li>
-                          <li class="nav-item"><a href="logout.php" class="nav-link text-white">Logout</a></li>';
+                    echo '<li class="nav-item displayNone"><a href="index.php" class="list-group-item">Dashboard</a></li>
+                        <li class="nav-item displayNone"><a href="profile.php" class="list-group-item">Profile</a></li>
+                        <li class="nav-item displayNone"><a href="admin.php" class="list-group-item">Administrators</a></li>
+                        <li class="nav-item displayNone"><a href="doctor.php" class="list-group-item">Doctor</a></li>
+                        <li class="nav-item displayNone"><a href="patient.php" class="list-group-item">Patient</a></li>
+                        <li class="nav-item displayNone"><a href="logout.php" class="list-group-item">Logout</a></li>';
                 } else if(isset($_SESSION['patient'])) {
                     echo '<li class="nav-item displayNone"><a href="index.php" class="list-group-item">Dashboard</a></li>
                     <li class="nav-item displayNone"><a href="profile.php" class="list-group-item">Profile</a></li>

@@ -46,17 +46,19 @@
 		.list-group {
 			display:none;
 		}
-}
+	}
     </style>
 	
 </head>
+
 
 <body>
     <div class="list-group bg-dark" >
 		<div>
         <a href="index.php" class="list-group-item bg-dark">Dashboard</a>
-        <a href="profile1.php" class="list-group-item bg-dark">Profile</a>
-        <a href="appointment.php" class="list-group-item bg-dark">Appointment</a>
+        <a href="profile.php" class="list-group-item bg-dark">Profile</a>
+        <a href="admin.php" class="list-group-item bg-dark">Administrators</a>
+        <a href="doctor.php" class="list-group-item bg-dark">Doctor</a>
         <a href="patient.php" class="list-group-item bg-dark">Patient</a>
 		</div>
 		<div style="margin-bottom: 20px;">

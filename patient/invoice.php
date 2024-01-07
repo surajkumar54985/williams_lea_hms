@@ -1,6 +1,4 @@
-<?php
-session_start();
-?>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -30,6 +28,7 @@ $res = mysqli_query($connect, $query);
 $row = mysqli_fetch_array($res);
 
 $fname = $row['firstname'];
+
 
 $querys = mysqli_query($connect, "SELECT * FROM income WHERE patient='$fname'");
 
