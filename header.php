@@ -45,7 +45,11 @@
                     <li class="nav-item displayNone"><a href="invoice.php" class="list-group-item">Invoice</a></li>
                     <li class="nav-item displayNone"><a href="logout.php" class="list-group-item">Logout</a></li>';
                 } else if(isset($_SESSION['doc'])) {
-                    echo '<li class="nav-item"><a href="logout.php" class="nav-link text-white">Logout</a></li>';
+                    echo '<li class="nav-item displayNone"><a href="index.php" class="list-group-item">Dashboard</a></li>
+                    <li class="nav-item displayNone"><a href="profile.php" class="list-group-item">Profile</a></li>
+                    <li class="nav-item displayNone"><a href="appointment.php" class="list-group-item">Book Appointment</a></li>
+                    <li class="nav-item displayNone"><a href="invoice.php" class="list-group-item">Invoice</a></li>
+                    <li class="nav-item displayNone"><a href="logout.php" class="list-group-item">Logout</a></li>';
                 } else {
                     echo '<li class="nav-item"><a href="index.php" class="nav-link text-white"><img src="img/home.png" width="20" height="20" alt=""> HOME</a></li>
                           <li class="nav-item"><a href="adminlogin.php" class="nav-link text-white"><img src="img/admin.png" width="20" height="20" alt=""> ADMIN</a></li>
