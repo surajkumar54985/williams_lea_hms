@@ -36,7 +36,7 @@
         </button>
 
         <div class="displayNone collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class=" navbar-nav ms-auto">
+            <ul class=" navbar-nav ms-auto" style="margin-right: 20px;">
                 <?php
                 if (isset($_SESSION['admin'])) {
                     echo '<li class="nav-item displayNone"><a href="index.php" class="list-group-item">Dashboard</a></li>
@@ -58,10 +58,10 @@
                     <li class="nav-item displayNone"><a href="invoice.php" class="list-group-item">Invoice</a></li>
                     <li class="nav-item displayNone"><a href="logout.php" class="list-group-item">Logout</a></li>';
                 } else {
-                    echo '<li class="nav-item"><a href="index.php" class="nav-link text-white"><img src="img/home.png" width="20" height="20" alt=""> HOME</a></li>
-                          <li class="nav-item"><a href="adminlogin.php" class="nav-link text-white"><img src="img/admin.png" width="20" height="20" alt=""> ADMIN</a></li>
-                          <li class="nav-item"><a href="doctorlogin.php" class="nav-link text-white"><img src="img/doctor.png" width="20" height="20" alt=""> DOCTOR</a></li>
-                          <li class="nav-item"><a href="patientlogin.php" class="nav-link text-white"><img src="img/patient.jpg" width="20" height="20" alt=""> PATIENT</a></li>';
+                    echo '<li class="nav-item"><a href="index.php" class="nav-link text-white">HOME</a></li>
+                          <li class="nav-item"><a href="adminlogin.php" class="nav-link text-white">ADMIN</a></li>
+                          <li class="nav-item"><a href="doctorlogin.php" class="nav-link text-white">DOCTOR</a></li>
+                          <li class="nav-item"><a href="patientlogin.php" class="nav-link text-white">PATIENT</a></li>';
                 }
                 ?>
             </ul>

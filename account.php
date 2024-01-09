@@ -12,6 +12,9 @@
         $confirm_password = $_POST['con_pass'];
         $error= array();
 
+        $emailCheckQuery = "SELECT * FROM patients WHERE email = '$email'";
+        $emailCheckResult = mysqli_query($connect, $emailCheckQuery);
+
         if (empty($firstname)) {
             $error['apply'] = "Enter Firstname" ;
         }
@@ -43,15 +46,33 @@
         {
             $error['apply'] = "Both Password do not match";
         }
+        else if (mysqli_num_rows($emailCheckResult) > 0) {
+            $error['apply'] = "User with this email already exists. Please log in.";
+        }
         if (count($error) == 0) 
         {
-            $query="INSERT INTO  patients (firstname,surname, username,email,gender,country,password,date_reg,profile) VALUES ('$firstname','$surname','$username','$email','$gender','$country','$password',NOW(),'patient.jpg')";
-            $result=mysqli_query($connect,$query);
-            if ($result) {
-                echo "<script>alert('you have registered')";
-                header("Location: patientlogin.php");
-            }else{
-                echo "<script>alert('failed')";
+            require_once './auth/generateToken.php';
+			$token = generateToken($email);
+	
+			
+			$qry="INSERT INTO  token (username,token) VALUES ('$username','$token')";
+			$res=mysqli_query($connect,$qry);
+			if($res)
+			{
+                $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
+                $query="INSERT INTO  patients (firstname,surname, username,email,gender,country,password,date_reg,profile,status) VALUES ('$firstname','$surname','$username','$email','$gender','$country','$hashedPassword',NOW(),'patient.jpg','pending')";
+                $result=mysqli_query($connect,$query);
+                require_once './Mailer/patientVerificationMail.php';
+				if ($result)
+				{
+					sendVerificationEmail($email, $token);
+					echo "<script>alert('you have registered')";
+					header("Location: patientlogin.php");
+				}
+				else
+				{
+					echo "<script>alert('failed')";
+				}
             }
         }
     }

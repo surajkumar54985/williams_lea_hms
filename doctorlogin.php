@@ -24,7 +24,7 @@
 			$rows=mysqli_fetch_array($k);
 
 
-			if (empty($uname)) 
+			if (empty($uname))
 			{
 				$errror['login']="Enter Username";
 			}
@@ -42,17 +42,42 @@
 			}
 			if (count($errror)==0) 
 			{
-				$query="SELECT * FROM doctors WHERE username='$uname' AND password='$password'";
-				$res=mysqli_query($connect,$query);
-				if (mysqli_num_rows($res)) 
-				{
-					echo "<script>alert('done')</script>";
-					$_SESSION['doc']=$uname;
-					header("Location:doctor/index.php");
-				}
-				else
-				{
-					echo "<script>alert('Inavlid account')</script>";
+				// Generate JWT token
+				require_once './auth/generateToken.php';
+				$token = generateToken($email);
+
+				$passwordQuery = "SELECT password FROM doctors WHERE username = '$uname'";
+				$passwordResult = mysqli_query($connect, $passwordQuery);
+
+				if ($passwordResult && mysqli_num_rows($passwordResult) > 0) {
+					$row = mysqli_fetch_assoc($passwordResult);
+					$storedHashedPassword = $row['password'];
+
+					// Verify the entered password against the stored hash
+					if (password_verify($password, $storedHashedPassword)) {	
+						$statusQuery = "SELECT status FROM doctors WHERE username = '$uname' AND password = '$storedHashedPassword'";
+						$statusResult = mysqli_query($connect, $statusQuery);
+						if (mysqli_num_rows($statusResult)) {
+							$statusrow = mysqli_fetch_assoc($statusResult);
+							$status = $statusrow['status'];
+							if($status !=="approved")
+							{
+								echo "<script>alert('your account is not verified!!')</script>";
+							}
+							else
+							{
+								echo "<script>alert('done')</script>";
+								$_SESSION['doc']=$uname;
+								header("Location:doctor/index.php");
+							}
+						}
+						else{
+							echo "<script>alert('Inavlid account')</script>";
+						}
+					} else {
+						// Password is incorrect
+						$error['login'] = "Invalid email or password";
+					}
 				}
 			}
 		}
@@ -73,7 +98,7 @@
                 <div class="col-md-6 my-5">
                     <div class="card shadow">
                         <div class="card-body">
-                            <h5 class="text-center mb-4">Patients Login👨‍⚕️!!!</h5>
+                            <h5 class="text-center mb-4">Doctors Login👨‍⚕️!!!</h5>
                             <div><?php echo $show; ?></div>
                             <form method="post">
                                 <div class="row my-2">
@@ -90,7 +115,7 @@
                                 </div>
                                 <div class="text-center my-3">
                                     <input type="submit" name="login" value="Login" class="btn btn-danger">
-                                    <p class="mt-3 my-3">Dont have an account🤷‍♂️<a href="account.php">!!Apply Now!!</a></p>
+                                    <p class="mt-3 my-3">Dont have an account🤷‍♂️<a href="apply.php">!!Apply Now!!</a></p>
                                 </div>
                             </form>
                         </div>

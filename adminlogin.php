@@ -20,14 +20,36 @@
 			$error=array();
 			if (empty($username)) 
 			{
-				$error['admin']="Enter Username";
+				$error['uname']="Enter Username";
 			}
 			else if (empty($password)) 
 			{
-				$error['admin']="Enter Password";
+				$error['pass']="Enter Password";
 			}
 			if (count($error)==0) 
 			{
+
+				$passwordQuery = "SELECT password FROM admin WHERE username = '$username'";
+				$passwordResult = mysqli_query($connect, $passwordQuery);
+
+				if ($passwordResult && mysqli_num_rows($passwordResult) > 0) {
+					$row = mysqli_fetch_assoc($passwordResult);
+					$storedHashedPassword = $row['password'];
+
+					// Verify the entered password against the stored hash
+					if (password_verify($password, $storedHashedPassword)) {
+						
+						echo "<script>alert('you are logged in🤷‍♂️')</script>";	
+						$_SESSION['admin']=$username;	
+						header("Location:admin/index.php");
+						exit();
+					} else {
+						// Password is incorrect
+						$error['login'] = "Invalid email or password";
+					}
+				}
+
+
 				$query="SELECT * FROM admin WHERE username='$username' AND password='$password'";
 				$result=mysqli_query($connect,$query);
 				if(mysqli_num_rows($result)==1) 

@@ -30,15 +30,44 @@
 				$errror['login']="Enter Password";
 			}
 			if (count($errror)==0) {
-				$query="SELECT * FROM patients WHERE username='$uname' AND password='$password'";
-				$res=mysqli_query($connect,$query);
-				if (mysqli_num_rows($res)) {
-					echo "<script>alert('done')</script>";
-					$_SESSION['patient']=$uname;
-					header("Location:patient/index.php");
-				}
-				else{
-					echo "<script>alert('Inavlid account')</script>";
+				// Generate JWT token
+				require_once './auth/generateToken.php';
+				$token = generateToken($uname);
+		
+				// Return the token to the client (e.g., as JSON)
+				// echo json_encode(['token' => $token]);
+				$passwordQuery = "SELECT password FROM patients WHERE username = '$uname'";
+				$passwordResult = mysqli_query($connect, $passwordQuery);
+
+				if ($passwordResult && mysqli_num_rows($passwordResult) > 0) {
+					$row = mysqli_fetch_assoc($passwordResult);
+					$storedHashedPassword = $row['password'];
+
+					// Verify the entered password against the stored hash
+					if (password_verify($password, $storedHashedPassword)) {	
+						$statusQuery = "SELECT status FROM patients WHERE username = '$uname' AND password = '$storedHashedPassword'";
+						$statusResult = mysqli_query($connect, $statusQuery);
+						if (mysqli_num_rows($statusResult)) {
+							$statusrow = mysqli_fetch_assoc($statusResult);
+							$status = $statusrow['status'];
+							if($status !=="approved")
+							{
+								echo "<script>alert('Please verify your account first!!')</script>";
+							}
+							else
+							{
+								echo "<script>alert('done')</script>";
+								$_SESSION['patient']=$uname;
+								header("Location:patient/index.php");
+							}
+						}
+						else{
+							echo "<script>alert('Inavlid account')</script>";
+						}
+					} else {
+						// Password is incorrect
+						$error['login'] = "Invalid email or password";
+					}
 				}
 			}
 		}

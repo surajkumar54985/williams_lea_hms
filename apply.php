@@ -12,6 +12,10 @@
 		$password= $_POST['pass'];
 		$confirm_password = $_POST['con_pass'];
 		$error= array();
+
+        $emailCheckQuery = "SELECT * FROM doctors WHERE email = '$email'";
+        $emailCheckResult = mysqli_query($connect, $emailCheckQuery);
+
 		if (empty($firstname)) 
 		{
 			$error['apply'] = "Enter Firstname" ;
@@ -48,11 +52,16 @@
 		{
 			$error['apply'] = "Both Password do not match";
 		}
+        else if (mysqli_num_rows($emailCheckResult) > 0) {
+            $error['apply'] = "User with this email already exists. Please log in.";
+        }
 		if (count($error) == 0) 
 		{
-			$query="INSERT INTO  doctors (firstname,surname, username,email,gender,phone,country,password,salary,data_reg,status,profile) VALUES ('$firstname','$surname','$username','$email','$gender','$phone','$country','$password','0',NOW(),'Pendding','doctor.jpg')";
+			$hashedPassword = password_hash($password, PASSWORD_BCRYPT);
+
+			$query="INSERT INTO  doctors (firstname,surname,username,email,gender,phone,country,password,salary,data_reg,status,profile) VALUES ('$firstname','$surname','$username','$email','$gender','$phone','$country','$hashedPassword','0',NOW(),'Pendding','doctor.jpg')";
 			$result=mysqli_query($connect,$query);
-			if ($result) 
+			if ($result)
 			{
 				echo "<script>alert('you have registered')";
 				header("Location: doctorlogin.php");

@@ -68,6 +68,7 @@ include '../header.php'; ?>
 								</div>
 							</form>
 							<?php 
+								$error= array();
 								if (isset($_POST['add'])) 
 								{
 									$uname=$_POST['uname'];
@@ -78,10 +79,24 @@ include '../header.php'; ?>
 									}
 									elseif (empty($pass)) 
 									{
-										$error['u']="Admin Password";
+										$error['p']="Admin Password";
 									}
-									$q="INSERT INTO admin(username,password) VALUES('$uname','$pass')";
-									$result=mysqli_query($con,$q);
+									if(count($error) == 0)
+									{
+										$hashedPassword = password_hash($pass, PASSWORD_BCRYPT);
+										
+										$q="INSERT INTO admin(username,password) VALUES('$uname','$hashedPassword')";
+										$result=mysqli_query($con,$q);
+										if ($result)
+										{
+											echo "<script>alert('you have registered')";
+											header("Location: doctorlogin.php");
+										}
+										else
+										{
+											echo "<script>alert('failed')";
+										}
+									}
 								}
 							?>
 						</div>
