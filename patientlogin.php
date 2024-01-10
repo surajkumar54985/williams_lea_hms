@@ -32,7 +32,6 @@
 			if (count($errror)==0) {
 				// Generate JWT token
 				require_once './auth/generateToken.php';
-				$token = generateToken($uname);
 		
 				// Return the token to the client (e.g., as JSON)
 				// echo json_encode(['token' => $token]);
@@ -56,8 +55,9 @@
 							}
 							else
 							{
+								$token = generateToken($uname);
 								echo "<script>alert('done')</script>";
-								$_SESSION['patient']=$uname;
+								$_SESSION['patient']=$token;
 								header("Location:patient/index.php");
 							}
 						}
@@ -65,7 +65,6 @@
 							echo "<script>alert('Inavlid account')</script>";
 						}
 					} else {
-						// Password is incorrect
 						$error['login'] = "Invalid email or password";
 					}
 				}

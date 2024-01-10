@@ -1,4 +1,26 @@
+<?php
+	require_once '../auth/config.php';
+	require_once '../vendor/autoload.php'; // Composer autoloader
+	use Firebase\JWT\JWT;
+	use Firebase\JWT\Key;
+	if (!isset($_SESSION['admin'])) {
+		// Redirect to the login page or another page
+		header("Location: ../adminlogin.php");
+		exit(); // Stop further execution
+	}
+	else
+	{
+		$key = new Key('suraj12345678kumar', 'HS256');
+		$token = $_SESSION['admin'];
+		// Verify the token
+		$decoded = JWT::decode($token, $key, ['HS256']);
 
+		if (!isset($decoded->iss, $decoded->aud, $decoded->iat, $decoded->exp, $decoded->data)) {
+			header("Location: ../adminlogin.php");
+			exit(); // Stop further execution
+		}
+	}
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -14,84 +36,86 @@
 <div class="col-md-10">
 <h5 class="text-center">Job Request</h5>
 <?php
-include '../connection.php';
-$query= "SELECT * FROM doctors WHERE status='Pendding' ORDER BY data_reg ASC";
-$res=mysqli_query($connect, $query);
+	include '../connection.php';
 
-$output ="";
+	$query= "SELECT * FROM doctors WHERE status='Pendding' ORDER BY data_reg ASC";
+	$res=mysqli_query($connect, $query);
 
-$output="
-<table class='table table-bordered'>
-<tr>
-<th>ID</th>
-<th>Firstname</th> 
-<th>Surnamek</th>
-<th>Username</th>
-<th>Email</th>
-<th>Phone</th> 
-<th>Date Registerd</th>
-<th>Action</th
-</tr>";
-if (mysqli_num_rows($res)<1) {
-	$output.="
+	$output ="";
+
+	$output="
+	<table class='table table-bordered'>
 	<tr>
-	<td colspan='8'>No job Request</td>
+	<th>ID</th>
+	<th>Firstname</th> 
+	<th>Surnamek</th>
+	<th>Username</th>
+	<th>Email</th>
+	<th>Phone</th> 
+	<th>Date Registerd</th>
+	<th>Action</th
+	</tr>";
+	if (mysqli_num_rows($res)<1) {
+		$output.="
+		<tr>
+		<td colspan='8'>No job Request</td>
+		</tr>
+		";
+	}
+	while ($row=mysqli_fetch_array($res)) {
+		$output.="
+		<tr>
+		<td>".$row['id']."</td>
+		<td>".$row['firstname']."</td>
+		<td>".$row['surname']."</td>
+		<td>".$row['username']."</td>
+		<td>".$row['email']."</td>
+		<td>".$row['phone']."</td>
+		<td>".$row['data_reg']."</td>
+		<td>
+		<form Action='job_request.php' method='POST'>
+		<input type='hidden' name='id' value=".$row['id'].">
+		<input type='submit' name='approve' class='btn btn-success' value='Approve'>
+		<input type='submit' name='reject' class='btn btn-danger'value='Reject'>
+		</form></td>";
+	}
+	$output.="
 	</tr>
-	";
-}
-while ($row=mysqli_fetch_array($res)) {
+	</table>";
+	echo $output;
 	$output.="
-	<tr>
-	<td>".$row['id']."</td>
-	<td>".$row['firstname']."</td>
-	<td>".$row['surname']."</td>
-	<td>".$row['username']."</td>
-	<td>".$row['email']."</td>
-	<td>".$row['phone']."</td>
-	<td>".$row['data_reg']."</td>
-	<td>
-	<form Action='job_request.php' method='POST'>
-	<input type='hidden' name='id' value=".$row['id'].">
-	<input type='submit' name='approve' class='btn btn-success' value='Approve'>
-	<input type='submit' name='reject' class='btn btn-danger'value='Reject'>
-	</form></td>";
-}
-$output.="
-</tr>
-</table>";
-echo $output;
-$output.="
-</tr>
-</table>";?>
+	</tr>
+	</table>";
+?>
 <?php
-if(isset($_POST['approve'])){ $id = $_POST['id'];
+	if(isset($_POST['approve'])){ $id = $_POST['id'];
 
-$select = "UPDATE doctors SET status = 'approved' WHERE id = '$id'";
- $result = mysqli_query($connect, $select);
+	$select = "UPDATE doctors SET status = 'approved' WHERE id = '$id'";
+	$result = mysqli_query($connect, $select);
 
-echo '<script type "text/javascript">';
+	echo '<script type "text/javascript">';
 
-echo 'alert("User Approved!");';
+	echo 'alert("User Approved!");';
 
-echo 'window.location.href="job_request.php"';
+	echo 'window.location.href="job_request.php"';
 
-echo'</script>';
+	echo'</script>';
 
-}
+	}
 
-if(isset($_POST['reject'])){
- $id = $_POST['id'];
+	if(isset($_POST['reject'])){
+	$id = $_POST['id'];
 
-$select= "DELETE FROM doctors WHERE id = '$id'";
-$result = mysqli_query($connect, $select);
+	$select= "DELETE FROM doctors WHERE id = '$id'";
+	$result = mysqli_query($connect, $select);
 
-echo '<script type="text/javascript">';
+	echo '<script type="text/javascript">';
 
-echo 'alert("User Denied!");';
+	echo 'alert("User Denied!");';
 
-echo 'window.location.href = "job_request.php"';
+	echo 'window.location.href = "job_request.php"';
 
-echo '</script>';}
+	echo '</script>';}
 ?>
 
 

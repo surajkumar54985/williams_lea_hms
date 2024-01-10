@@ -1,4 +1,28 @@
 <?php
+	require_once '../auth/config.php';
+	require_once '../vendor/autoload.php'; // Composer autoloader
+	use Firebase\JWT\JWT;
+	use Firebase\JWT\Key;
+	if (!isset($_SESSION['patient'])) {
+		// Redirect to the login page or another page
+		header("Location: ../patientlogin.php");
+		exit(); // Stop further execution
+	}
+	else
+	{
+		$key = new Key('suraj12345678kumar', 'HS256');
+		$token = $_SESSION['patient'];
+		// Verify the token
+		$decoded = JWT::decode($token, $key, ['HS256']);
+
+		if (!isset($decoded->iss, $decoded->aud, $decoded->iat, $decoded->exp, $decoded->data)) {
+			header("Location: ../patientlogin.php");
+			exit(); // Stop further execution
+		}
+	}
+?>
+
+<?php
 require('vendor/autoload.php');
 $con=mysqli_connect("localhost","root","","hms");?>
 <!DOCTYPE html>

@@ -79,9 +79,30 @@
 	<body>
 	<?php
 		include '../header.php';
-		include '../connection.php'; 
+		include '../connection.php';
+        require_once '../auth/config.php';
+        require_once '../vendor/autoload.php'; // Composer autoloader
+        use Firebase\JWT\JWT;
+        use Firebase\JWT\Key;
+        if (!isset($_SESSION['patient'])) {
+            // Redirect to the login page or another page
+            header("Location: ../patientlogin.php");
+            exit(); // Stop further execution
+        }
+        else
+        {
+            $key = new Key('suraj12345678kumar', 'HS256');
+            $token = $_SESSION['patient'];
+            // Verify the token
+            $decoded = JWT::decode($token, $key, ['HS256']);
+
+            if (!isset($decoded->iss, $decoded->aud, $decoded->iat, $decoded->exp, $decoded->data)) {
+                header("Location: ../patientlogin.php");
+                exit(); // Stop further execution
+            }
+        }
 	?>
-	<div class="container-fluid" style="padding-left: unset; margin-top: 0px;">
+    <div class="container-fluid" style="padding-left: unset; margin-top: 0px;">
         <div class="row">
             <div class="col-md-2">
                 <?php include 'sidenav.php'; ?>
@@ -108,25 +129,26 @@
                 <div class="row">
                     <div class="col-md-2"></div>
                     <div class="col-md-8">
-						<div class="card shadow box card-body " style="height:77%;width: 80%; margin-top: 50px;">   
-							<form method="post">
-								<div class="form-group">
-									<label>Subject</label>
-									<input type="text" name="sub" class="form-control my-2" autocomplete="off" placeholder="My Doctor">
-								</div>
-								<div class="form-group">
-									<label>Issue</label>
-									<input type="text" name="meg" class="form-control my-2">
-								</div>
-								<input type="submit" name="send" value="Send" class="btn btn-success my-2">
-							</form>
-						</div>
+                        <div class="card shadow box card-body " style="height:77%;width: 80%; margin-top: 50px;">   
+                            <form method="post">
+                                <div class="form-group">
+                                    <label>Subject</label>
+                                    <input type="text" name="sub" class="form-control my-2" autocomplete="off" placeholder="My Doctor">
+                                </div>
+                                <div class="form-group">
+                                    <label>Issue</label>
+                                    <input type="text" name="meg" class="form-control my-2">
+                                </div>
+                                <input type="submit" name="send" value="Send" class="btn btn-success my-2">
+                            </form>
+                        </div>
                     </div>
                     <div class="col-md-2"></div>
                 </div>
             </div>
         </div>
     </div>
+
 	<?php 
 		if (isset($_POST['send'])) 
 		{

@@ -85,6 +85,27 @@
 		<?php
 			include '../header.php';
 			include '../connection.php'; 
+			require_once '../auth/config.php';
+			require_once '../vendor/autoload.php'; // Composer autoloader
+			use Firebase\JWT\JWT;
+			use Firebase\JWT\Key;
+			if (!isset($_SESSION['admin'])) {
+				// Redirect to the login page or another page
+				header("Location: ../adminlogin.php");
+				exit(); // Stop further execution
+			}
+			else
+			{
+				$key = new Key('suraj12345678kumar', 'HS256');
+				$token = $_SESSION['admin'];
+				// Verify the token
+				$decoded = JWT::decode($token, $key, ['HS256']);
+
+				if (!isset($decoded->iss, $decoded->aud, $decoded->iat, $decoded->exp, $decoded->data)) {
+					header("Location: ../adminlogin.php");
+					exit(); // Stop further execution
+				}
+			}
 		?>
 		<div class="container-fluid" style="padding-left: unset; margin-top: 0px;">
 			<div class="row">
@@ -132,7 +153,7 @@
 							<div class="box box-info">
 								<h3>TOTAL&emsp;<a href="doctor.php"><img src="img/dc.jpg"><br><b>DOCTORS</b></a></h3>
 								<?php
-									$vr=mysqli_query($connect,"SELECT * FROM patients");
+									$vr=mysqli_query($connect,"SELECT * FROM doctors");
 									$num=mysqli_num_rows($vr);
 								?>
 								<h2>
