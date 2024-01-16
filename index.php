@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -15,22 +16,22 @@
 <body>
 
     <?php 
-        include 'header.php';
+        include './views/header.php';
         header("Access-Control-Allow-Origin: *");
         header("Access-Control-Allow-Methods: POST");
     ?>
     <?php
         if (isset($_SESSION['admin']))
         {
-            header("Location:admin/index.php");
+            header("Location:views/admin/index.php");
         }
         else if(isset($_SESSION['patient']))
         {
-            header("Location:patient/index.php");
+            header("Location:views/patient/index.php");
         }
         else if(isset($_SESSION['doc']))
         {
-            header("Location:doctor/index.php");
+            header("Location:views/doctor/index.php");
         }
         else
         {
@@ -41,7 +42,7 @@
                             <img src="img/doc.jpg" class="card-img-top" alt="Doctor Image">
                             <div class="card-body">
                                 <h5 class="card-title text-center text-dark bg-light">Register yourself as a Doctor👨‍⚕️</h5>
-                                <a href="apply.php" class="btn btn-success btn-block">Register!!!</a>
+                                <a href="/views/doctor/apply.php" class="btn btn-success btn-block">Register!!!</a>
                             </div>
                         </div>
                     </div>
@@ -51,7 +52,7 @@
                             <img src="img/pat.jpg" class="card-img-top" alt="Patient Image">
                             <div class="card-body">
                                 <h5 class="card-title text-center text-dark bg-light">Register yourself for consultation🤹‍♀️</h5>
-                                <a href="account.php" class="btn btn-success btn-block">Create Account!!!</a>
+                                <a href="/views/patient/account.php" class="btn btn-success btn-block">Create Account!!!</a>
                             </div>
                         </div>
                     </div>

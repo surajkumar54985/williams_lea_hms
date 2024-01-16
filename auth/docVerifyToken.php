@@ -50,31 +50,6 @@ function verifyToken($token) {
             echo 'Verification failed. Invalid token.';
             exit;
         }
-        // $query = "SELECT username FROM token WHERE token = '$token'";
-        // $result = mysqli_query($connect, $query);
-
-        // echo $result->num_rows;
-        // if ($result->num_rows > 0) 
-        // {
-        //     // Fetch the username
-        //     $row = $result->fetch_assoc();
-        //     $username = $row['username'];
-        //     echo $username;
-
-        //     // Update the user_table to set status to 'approved'
-        //     $updateQuery = "UPDATE doctors SET status = 'approved' WHERE username = '$username'";
-        //     if (mysqli_query($connect, $updateQuery) === TRUE) {
-        //         echo "User status updated successfully.";
-        //         // header("Location: doctorlogin.php");
-        //     } else {
-        //         echo "Error updating user status: " . $conn->error;
-        //     }
-        // } 
-        // else 
-        // {
-        //     echo "No matching token found.";
-        // }
-        // echo '<h4>Verification successful!</h4>';
     } 
     catch (Exception $e) 
     {

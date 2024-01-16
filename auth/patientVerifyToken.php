@@ -10,10 +10,9 @@ use Firebase\JWT\Key;
 
 $token = $_GET['token'];
 
-// echo $token;
 
 function verifyToken($token) {
-    include '../connection.php';
+    include '../model/connection.php';
 
     try {
         $key = new Key('suraj12345678kumar', 'HS256');
@@ -31,7 +30,7 @@ function verifyToken($token) {
                 $updateQuery = "UPDATE patients SET status = 'approved' WHERE username = '$username'";
                 if (mysqli_query($connect, $updateQuery) === TRUE) {
                     echo "User status updated successfully.";
-					header("Location: ../patientlogin.php");
+					header("Location: ../views/patient/patientlogin.php");
                 } else {
                     echo "Error updating user status: " . $conn->error;
                 }
