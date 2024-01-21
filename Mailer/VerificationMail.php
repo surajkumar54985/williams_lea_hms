@@ -4,6 +4,8 @@ use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
 require_once __DIR__ . '/../vendor/autoload.php';
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
+$dotenv->load();
 
 function sendVerificationEmail($email, $token) {
     $subject = 'Account Verification';
@@ -17,7 +19,7 @@ function sendVerificationEmail($email, $token) {
         $mail->Host = 'smtp.gmail.com';
         $mail->SMTPAuth = true;
         $mail->Username = 'surajkumar54985@gmail.com'; // Your Gmail username
-        $mail->Password = 'gbqdtasoucsnrtmi'; // Your Gmail password
+        $mail->Password = $_ENV['pass']; // Your Gmail password
         $mail->SMTPSecure = 'tls';
         $mail->Port = 587;
 

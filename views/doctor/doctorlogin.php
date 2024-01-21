@@ -17,7 +17,7 @@
 	<?php 
 		include '../../model/connection.php';
 		include '../../controller/doctor/doctorlogin.php'; 
-	?>
+	?> 
     <div class="container-fluid">
         <div class="col-md-12">
             <div class="row">

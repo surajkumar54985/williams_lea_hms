@@ -54,14 +54,13 @@
 <body>
     <div class="list-group bg-dark" >
 		<div>
-        <a href="index.php" class="list-group-item bg-dark">Dashboard</a>
-        <a href="profile1.php" class="list-group-item bg-dark">Profile</a>
-        <a href="appointment.php" class="list-group-item bg-dark">Appointment</a>
-        <a href="patient.php" class="list-group-item bg-dark">Patient</a>
+            <a href="index.php" class="list-group-item bg-dark">Dashboard</a>
+            <a href="profile1.php" class="list-group-item bg-dark">Profile</a>
+            <a href="appointment.php" class="list-group-item bg-dark">Appointment</a>
+            <a href="patient.php" class="list-group-item bg-dark">Patient</a>
 		</div>
 		<div style="margin-bottom: 20px;">
-		
-		<a href="logout.php" class="list-group-item bg-dark" style="display:flex; gap:10px; align-items:center; justify-content:center;"><i class="fas fa-sign-out"></i>logout</a>
+            <a href="logout.php" class="list-group-item bg-dark" style="display:flex; gap:10px; align-items:center; justify-content:center;"><i class="fas fa-sign-out"></i>logout</a>
 		</div>
     </div>
 

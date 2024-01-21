@@ -14,7 +14,6 @@ function sendVerificationEmail($email, $token) {
     $message = "Click on the following link to verify your account: $verificationLink";
 
     $mail = new PHPMailer();
-    echo $_ENV['pass'];
 
     try {
         $mail->isSMTP();
@@ -30,7 +29,6 @@ function sendVerificationEmail($email, $token) {
         $mail->isHTML(true);
         $mail->Subject = $subject;
         $mail->Body = $message;
-
         
         // echo json_encode($mail);
 

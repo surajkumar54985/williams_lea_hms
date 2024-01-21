@@ -4,7 +4,6 @@
 <head>
 	<title>Profile</title>
 	<style>
-        /* Additional Custom Styles */
         .profile-card {
             max-width: 500px;
             margin: auto;
